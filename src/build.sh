@@ -91,9 +91,25 @@ docker image pull --quiet "$image_previous" || \
   echo "No previously cached image found. The docker build will proceed without using a cached image"
 
 if [[ -n "$AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET" ]]; then
+  echo "Building multi-stage image cache"
   image_build_cache="$CI_APPLICATION_REPOSITORY:build-cache"
   docker image pull --quiet "$image_build_cache"
-  docker build --cache-from "$image_build_cache" --target $AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET -t "$image_build_cache" .
+  docker build \
+    --cache-from "$image_build_cache" \
+    $build_secret_args \
+    -f "$DOCKERFILE_PATH" \
+    --build-arg BUILDPACK_URL="$BUILDPACK_URL" \
+    --build-arg HTTP_PROXY="$HTTP_PROXY" \
+    --build-arg http_proxy="$http_proxy" \
+    --build-arg HTTPS_PROXY="$HTTPS_PROXY" \
+    --build-arg https_proxy="$https_proxy" \
+    --build-arg FTP_PROXY="$FTP_PROXY" \
+    --build-arg ftp_proxy="$ftp_proxy" \
+    --build-arg NO_PROXY="$NO_PROXY" \
+    --build-arg no_proxy="$no_proxy" \
+    $AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS \
+    --target "$AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET" \
+    --tag "$image_build_cache" .
   docker push "$image_build_cache"
 fi
 
