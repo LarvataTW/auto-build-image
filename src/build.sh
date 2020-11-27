@@ -116,7 +116,7 @@ if [[ -n "$AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET" ]]; then
     --tag "$image_build_cache" .
   docker push "$image_build_cache"
 
-  export AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS="--cache-from \"$image_build_cache\" $AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS"
+  export AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS="--cache-from $image_build_cache $AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS"
 fi
 
 
