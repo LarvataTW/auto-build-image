@@ -90,6 +90,14 @@ docker image pull --quiet "$image_previous" || \
   docker image pull --quiet "$image_latest" || \
   echo "No previously cached image found. The docker build will proceed without using a cached image"
 
+if [[ -n "$AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET" ]]; then
+  image_build_cache="$CI_APPLICATION_REPOSITORY:build-cache"
+  docker image pull --quiet "$image_build_cache"
+  docker build --cache-from "$image_build_cache" --target $AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET -t "$image_build_cache" .
+  docker push "$image_build_cache"
+fi
+
+
 # shellcheck disable=SC2154 # missing variable warning for the lowercase variables
 # shellcheck disable=SC2086 # double quoting for globbing warning for $build_secret_args and $AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS
 docker build \
