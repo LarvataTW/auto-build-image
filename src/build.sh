@@ -94,6 +94,9 @@ if [[ -n "$AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET" ]]; then
   echo "Building multi-stage image cache"
   image_build_cache="$CI_APPLICATION_REPOSITORY:build-cache"
   docker image pull --quiet "$image_build_cache"
+  
+  # shellcheck disable=SC2154 # missing variable warning for the lowercase variables
+  # shellcheck disable=SC2086 # double quoting for globbing warning for $build_secret_args and $AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS
   docker build \
     --cache-from "$image_build_cache" \
     $build_secret_args \
