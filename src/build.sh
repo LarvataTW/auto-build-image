@@ -116,13 +116,14 @@ if [[ -n "$AUTO_DEVOPS_BUILD_IMAGE_CACHE_TARGET" ]]; then
     --tag "$image_build_cache" .
   docker push "$image_build_cache"
 
-  export AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS="--cache-from $image_build_cache $AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS"
+  export AUTO_DEVOPS_BUILD_CACHE_FROM="--cache-from $image_build_cache"
 fi
 
 
 # shellcheck disable=SC2154 # missing variable warning for the lowercase variables
 # shellcheck disable=SC2086 # double quoting for globbing warning for $build_secret_args and $AUTO_DEVOPS_BUILD_IMAGE_EXTRA_ARGS
 docker build \
+  $AUTO_DEVOPS_BUILD_CACHE_FROM \
   --cache-from "$image_previous" \
   --cache-from "$image_latest" \
   $build_secret_args \
