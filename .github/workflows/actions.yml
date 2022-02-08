@@ -47,6 +47,9 @@ jobs:
           push: true
           context: .
           platforms: linux/amd64
+          build-args: |
+            DOCKER_VERSION=${{ DOCKER_VERSION }}
+            DOCKER_DRIVER=${{ DOCKER_DRIVER }}
           tags: |
             ${{ env.DOCKERHUB_OWNER }}/${{ env.IMAGE_NAME }}:latest
             ghcr.io/${{ env.GITHUB_OWNER }}/${{ env.IMAGE_NAME }}:latest
