@@ -41,6 +41,9 @@ jobs:
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
+        env:
+          DOCKER_VERSION: ${{ secrets.DOCKER_VERSION }}
+          DOCKER_DRIVER: ${{ secrets.DOCKER_DRIVER }}
         with:
           push: true
           context: .
