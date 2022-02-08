@@ -9,6 +9,8 @@ env:
   IMAGE_NAME: auto-build-image
   GITHUB_OWNER: larvatatw
   DOCKERHUB_OWNER: larvata
+  DOCKER_VERSION: 19.03.12
+  DOCKER_DRIVER: overlay2
 
 jobs:
 
@@ -41,9 +43,6 @@ jobs:
         name: Build and push
         id: docker_build
         uses: docker/build-push-action@v2
-        env:
-          DOCKER_VERSION: ${{ secrets.DOCKER_VERSION }}
-          DOCKER_DRIVER: ${{ secrets.DOCKER_DRIVER }}
         with:
           push: true
           context: .
